@@ -112,7 +112,7 @@ const CreateAccount: React.FC<CreateAccountProps> = ({ onBack, onComplete }) => 
         <div className="w-6" />
       </div>
 
-      {/* Content */}
+      {/* Contents */}
       <div className="flex-1 px-4 py-6 max-w-2xl mx-auto w-full">
 
         {step === 'phone' && (
