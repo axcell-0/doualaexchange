@@ -1,65 +1,259 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import React, { useState, useRef, useEffect } from 'react';
+import { ChevronLeft, Shield } from 'lucide-react';
+
+interface CreateAccountProps {
+  onBack?: () => void;
+  onComplete?: (phoneNumber: string) => void;
+}
+
+const CreateAccount: React.FC<CreateAccountProps> = ({ onBack, onComplete }) => {
+  const [step, setStep] = useState<'phone' | 'otp'>('phone');
+  const [phoneNumber, setPhoneNumber] = useState('');
+  const [countryCode, setCountryCode] = useState('+237');
+  const [otp, setOtp] = useState(['', '', '', '']);
+  const [isLoading, setIsLoading] = useState(false);
+  const [countdown, setCountdown] = useState(54);
+  const [isCountdownActive, setIsCountdownActive] = useState(false);
+
+  const otpRefs = [
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+    useRef<HTMLInputElement>(null),
+  ];
+
+  /* Countdown timer */
+  useEffect(() => {
+    if (isCountdownActive && countdown > 0) {
+      const timer = setTimeout(() => setCountdown((c) => c - 1), 1000);
+      return () => clearTimeout(timer);
+    } else if (countdown === 0) {
+      setIsCountdownActive(false);
+    }
+  }, [countdown, isCountdownActive]);
+
+  /* Send OTP */
+  const handleSendOTP = () => {
+    if (phoneNumber.length < 8) {
+      alert('Please enter a valid phone number');
+      return;
+    }
+
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      setStep('otp');
+      setCountdown(54);
+      setIsCountdownActive(true);
+    }, 1500);
+  };
+
+  /* OTP logic */
+  const handleOtpChange = (index: number, value: string) => {
+    if (!/^\d?$/.test(value)) return;
+
+    const newOtp = [...otp];
+    newOtp[index] = value;
+    setOtp(newOtp);
+
+    if (value && index < 3) {
+      otpRefs[index + 1].current?.focus();
+    }
+  };
+
+  const handleOtpKeyDown = (
+    index: number,
+    e: React.KeyboardEvent<HTMLInputElement>
+  ) => {
+    if (e.key === 'Backspace' && !otp[index] && index > 0) {
+      otpRefs[index - 1].current?.focus();
+    }
+  };
+
+  const handleOtpPaste = (e: React.ClipboardEvent) => {
+    e.preventDefault();
+    const pasted = e.clipboardData.getData('text').slice(0, 4).split('');
+    const newOtp = ['', '', '', ''];
+
+    pasted.forEach((char, i) => (newOtp[i] = char));
+    setOtp(newOtp);
+    otpRefs[Math.min(pasted.length, 3)].current?.focus();
+  };
+
+  /* Verify OTP */
+  const handleVerifyOTP = () => {
+    const code = otp.join('');
+    if (code.length !== 4) {
+      alert('Please enter the full 4-digit code');
+      return;
+    }
+
+    setIsLoading(true);
+    setTimeout(() => {
+      setIsLoading(false);
+      onComplete?.(countryCode + phoneNumber);
+    }, 1500);
+  };
+
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+    <div className="min-h-screen bg-white flex flex-col">
+
+      {/* Header */}
+      <div className=" px-4 py-4 flex items-center justify-between">
+        <button
+          onClick={onBack}
+          className="p-2 hover:bg-gray-100 rounded-lg"
+        >
+          <ChevronLeft className="w-6 h-6 text-gray-700" />
+        </button>
+        <h1 className="text-lg font-semibold">Create Account</h1>
+        <div className="w-6" />
+      </div>
+
+      {/* Content */}
+      <div className="flex-1 px-4 py-6 max-w-2xl mx-auto w-full">
+
+        {step === 'phone' && (
+          <>
+            {/* ===== VERIFY IDENTITY ===== */}
+            <h2 className="text-2xl font-bold mb-2">
+              Verify your identity
+            </h2>
+            <p className="text-gray-600 mb-6">
+              Enter your phone number to receive a secure 4-digit code.
+            </p>
+
+            {/* Phone Input */}
+            <label className="block text-sm font-medium mb-2">
+              Phone number
+            </label>
+
+            <div className="flex gap-2 mb-4">
+              <select
+                value={countryCode}
+                onChange={(e) => setCountryCode(e.target.value)}
+                className="w-24 h-14 border rounded-lg px-3 bg-gray-50"
+              >
+                <option value="+237">🇨🇲 +237</option>
+                <option value="+1">🇺🇸 +1</option>
+                <option value="+33">🇫🇷 +33</option>
+              </select>
+
+              <input
+                type="tel"
+                value={phoneNumber}
+                onChange={(e) =>
+                  setPhoneNumber(e.target.value.replace(/\D/g, ''))
+                }
+                placeholder="6xx xxx xxx"
+                maxLength={9}
+                className="flex-1 h-14 border rounded-lg px-4 bg-gray-50"
+              />
+            </div>
+
+            {/* Security note */}
+            <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
+              <Shield className="w-4 h-4 text-emerald-600" />
+              End-to-end encrypted verification
+            </div>
+
+            {/* Send OTP */}
+            <button
+              onClick={handleSendOTP}
+              disabled={isLoading || phoneNumber.length < 8}
+              className={`w-full h-14 rounded-xl font-semibold text-lg transition
+                ${
+                  isLoading || phoneNumber.length < 8
+                    ? 'bg-gray-200 text-gray-400'
+                    : 'bg-emerald-500 hover:bg-emerald-600 text-white'
+                }`}
             >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
+              {isLoading ? 'Sending…' : 'Send OTP'}
+            </button>
+          </>
+        )}
+
+        {step === 'otp' && (
+          <>
+            {/* ===== ENTER CODE ===== */}
+            <h2 className="text-2xl font-bold mb-2">
+              Enter code
+            </h2>
+            <p className="text-gray-600 mb-6">
+              We&apos;ve sent a 4-digit code to{' '}
+              <span className="font-semibold">
+                {countryCode} {phoneNumber}
+              </span>
+            </p>
+
+            {/* OTP INPUTS */}
+            <div className="flex gap-4 justify-center mb-6">
+              {otp.map((digit, index) => (
+                <input
+                  key={index}
+                  ref={otpRefs[index]}
+                  type="text"
+                  inputMode="numeric"
+                  maxLength={1}
+                  value={digit}
+                  onChange={(e) =>
+                    handleOtpChange(index, e.target.value)
+                  }
+                  onKeyDown={(e) =>
+                    handleOtpKeyDown(index, e)
+                  }
+                  onPaste={index === 0 ? handleOtpPaste : undefined}
+                  className={`w-14 h-14 text-center text-2xl font-semibold rounded-xl border-2
+                    ${
+                      digit
+                        ? 'border-emerald-500 bg-emerald-50'
+                        : 'border-gray-300'
+                    }
+                    focus:outline-none focus:ring-2 focus:ring-emerald-500`}
+                />
+              ))}
+            </div>
+
+            {/* Resend */}
+            <p className="text-center text-sm text-gray-600 mb-6">
+              Didn&apos;t receive the code?{' '}
+              {isCountdownActive ? (
+                <span className="text-emerald-600 font-medium">
+                  Resend in 0:{countdown.toString().padStart(2, '0')}
+                </span>
+              ) : (
+                <button
+                  onClick={() => {
+                    setCountdown(54);
+                    setIsCountdownActive(true);
+                  }}
+                  className="text-emerald-600 font-medium hover:underline"
+                >
+                  Resend code
+                </button>
+              )}
+            </p>
+
+            {/* Verify */}
+            <button
+              onClick={handleVerifyOTP}
+              disabled={isLoading || otp.some((d) => !d)}
+              className={`w-full h-14 rounded-xl font-semibold text-lg transition
+                ${
+                  isLoading || otp.some((d) => !d)
+                    ? 'bg-gray-200 text-gray-400'
+                    : 'bg-emerald-500 hover:bg-emerald-600 text-white'
+                }`}
             >
-              Learning
-            </a>{" "}
-            center.
-          </p>
-        </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
+              {isLoading ? 'Verifying…' : 'Verify OTP'}
+            </button>
+          </>
+        )}
+      </div>
     </div>
   );
-}
+};
+
+export default CreateAccount;
