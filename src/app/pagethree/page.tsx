@@ -2,6 +2,7 @@
 
 import React, { useState, useRef, useEffect } from "react";
 import { ChevronLeft, Shield } from "lucide-react";
+import Link from "next/link";
 
 /* ================= TYPES ================= */
 
@@ -164,7 +165,10 @@ const CreateAccount: React.FC<CreateAccountProps> = ({
           onClick={onBack}
           className="p-2 hover:bg-gray-100 rounded-lg"
         >
-          <ChevronLeft className="w-6 h-6 text-gray-700" />
+          <Link href={'/pageone'}>
+          
+            <ChevronLeft  className="w-6 h-6 text-gray-700" />
+          </Link>
         </button>
         <h1 className="text-lg font-semibold">Create Account</h1>
         <div className="w-6" />
