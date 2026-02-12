@@ -1,14 +1,9 @@
-import { TopBar } from "@/components/TopBar";
-import { MapLayer } from "@/components/MapLayer";
-import { BottomControls } from "@/components/BottomControls";
+import React from 'react'
 
-export default function HomePage() {
+const page = () => {
   return (
-    <div className="relative flex h-screen w-full flex-col overflow-hidden">
-      <TopBar />
-      <MapLayer />
-      <BottomControls />
-      <div className="h-4 bg-white dark:bg-background-dark" />
-    </div>
-  );
+    <div>page</div>
+  )
 }
+
+export default page
