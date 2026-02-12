@@ -26,7 +26,7 @@ export default function page() {
           <Person/>
         </div> 
         <button className=' py-2 rounded-md my-6 shadow-xl hover:bg-green-500 hover:text-white transition duration-100 w-full text-black bg-green-400 flex items-center gap-3 
-        text-xl font-semibold shadow justify-center'>continue <FaLongArrowAltRight />
+        text-xl font-semibold justify-center'>continue <FaLongArrowAltRight />
         </button>
 
         <p className='text-gray-400 text-[12px] text-center  w-full'>you can swith your profile type later in setting</p> 

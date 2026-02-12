@@ -26,7 +26,7 @@ const LoadingScreen: React.FC<{ onLoadComplete?: () => void }> = ({ onLoadComple
   }, [onLoadComplete]);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-emerald-900 via-emerald-800 to-emerald-950 flex flex-col items-center justify-between px-6 py-12 sm:px-8">
+    <div className="min-h-screen bg-linear-to-b from-emerald-900 via-emerald-800 to-emerald-950 flex flex-col items-center justify-between px-6 py-12 sm:px-8">
       {/* Top spacer */}
       <div className="flex-1" />
 
