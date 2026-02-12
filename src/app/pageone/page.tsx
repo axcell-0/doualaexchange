@@ -3,8 +3,8 @@ import TypedText from '@/components/TypedText';
 import React from 'react'
 import { FaLongArrowAltRight } from 'react-icons/fa';
 
-import { FaChevronLeft } from "react-icons/fa6";
-
+/* import { FaChevronLeft } from "react-icons/fa6";
+ */
 export default function page() {
   return (
     <div  className='bg-[#f5f6f8] pt-7  pb-4 lg:px-7 '>
