@@ -1,8 +1,10 @@
 "use client";
 
 import React, { useState, useRef, useEffect } from "react";
-import { ChevronLeft, Shield } from "lucide-react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { IoIosArrowBack } from "react-icons/io";
+import { CiLock } from "react-icons/ci";
 
 /* ================= TYPES ================= */
 
@@ -136,12 +138,13 @@ const CreateAccount: React.FC<CreateAccountProps> = ({
   };
 
   /* ================= VERIFY OTP ================= */
-
+  const router = useRouter();
   const handleVerifyOTP = () => {
     const code = otp.join("");
     if (code.length !== 4) {
       alert("Please enter the full 4-digit code");
       return;
+      
     }
 
     setIsLoading(true);
@@ -152,6 +155,7 @@ const CreateAccount: React.FC<CreateAccountProps> = ({
         email,
         phoneNumber: selectedCountry.dial + phoneNumber,
       });
+      router.push('/main')
     }, 1500);
   };
 
@@ -167,7 +171,7 @@ const CreateAccount: React.FC<CreateAccountProps> = ({
         >
           <Link href={'/pageone'}>
           
-            <ChevronLeft  className="w-6 h-6 text-gray-700" />
+            <IoIosArrowBack  className="w-6 h-6 text-gray-700" />
           </Link>
         </button>
         <h1 className="text-lg font-semibold">Create Account</h1>
@@ -240,7 +244,7 @@ const CreateAccount: React.FC<CreateAccountProps> = ({
             </div>
 
             <div className="flex items-center gap-2 text-sm text-gray-600 mb-6">
-              <Shield className="w-4 h-4 text-emerald-600" />
+              <CiLock className="w-4 h-4 text-emerald-600" />
               End-to-end encrypted verification
             </div>
 

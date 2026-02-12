@@ -10,7 +10,7 @@ export default function page() {
     <div  className='bg-[#f5f6f8] pt-7  pb-4 lg:px-7 '>
       {/* one */}
       <div className='flex  px-5 gap-20  py-4 items-center'>
-        <FaChevronLeft size={20}  color='#102216'/>
+        {/* <FaChevronLeft size={20}  color='#102216'/> */}
         <h1 className='font-bold text-3xl text-[#102216] '>Profile Choice</h1>
       </div>
       {/* two */}
@@ -33,7 +33,7 @@ export default function page() {
             title="I am a business"
             description="I want to exchange large amounts for my company with priority processing."
             image="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d"
-            link="/business"
+            link="/signup"
           />
         </div>
         <button className=' py-2 rounded-md my-6 shadow-xl hover:bg-green-500 hover:text-white transition duration-100 w-full text-black bg-green-400 flex items-center gap-3 

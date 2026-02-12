@@ -1,7 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import { ChevronLeft, Copy, Check, Clock } from "lucide-react";
+import { IoIosArrowBack } from "react-icons/io";
+import { MdContentCopy } from "react-icons/md";
+import { FaRegCheckCircle } from "react-icons/fa";
+import { CiClock2 } from "react-icons/ci";
 
 /* =======================
    TYPE DEFINITIONS
@@ -110,7 +113,7 @@ const VerificationDetails: React.FC<VerificationDetailsProps> = ({
       <div className="sticky top-0 bg-white px-4 py-3 z-20">
         <div className="max-w-6xl mx-auto flex items-center justify-between">
           <button onClick={onBack} className="p-2 hover:bg-gray-100 rounded-lg">
-            <ChevronLeft className="w-6 h-6" />
+            <IoIosArrowBack className="w-6 h-6" />
           </button>
           <h1 className="text-lg font-semibold">Verification Detail</h1>
           <div className="w-10" />
@@ -125,7 +128,7 @@ const VerificationDetails: React.FC<VerificationDetailsProps> = ({
             <div className="relative mx-auto lg:mx-0 w-28 h-28 rounded-full bg-orange-400 flex items-center justify-center text-white text-4xl font-bold">
               {userInfo.name.charAt(0)}
               <span className="absolute bottom-0 right-0 bg-yellow-400 p-2 rounded-full">
-                <Clock className="w-4 h-4" />
+                <CiClock2 className="w-4 h-4" />
               </span>
             </div>
 
@@ -146,7 +149,7 @@ const VerificationDetails: React.FC<VerificationDetailsProps> = ({
                   {identityDocument.description}
                 </p>
 
-                <div className="relative aspect-[1.6/1] bg-gradient-to-br from-cyan-100 to-teal-200 rounded-xl p-4">
+                <div className="relative aspect-[1.6/1] bg-linear-to-br from-cyan-100 to-teal-200 rounded-xl p-4">
                   <div className="absolute bottom-2 left-0 right-0 px-4">
                     <div className="h-6 flex gap-0.5">
                       {BARCODE_HEIGHTS.map((h, i) => (
@@ -179,7 +182,7 @@ const VerificationDetails: React.FC<VerificationDetailsProps> = ({
                     )
                   }
                 >
-                  {phoneCopied ? <Check /> : <Copy />}
+                  {phoneCopied ? <FaRegCheckCircle /> : <MdContentCopy />}
                 </button>
               </div>
 
