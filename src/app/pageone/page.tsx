@@ -30,8 +30,8 @@ export default function page() {
           />
 
           <Person
-            title="I am a business"
-            description="I want to exchange large amounts for my company with priority processing."
+            title="I am a money changer"
+            description="I have money to exchange for others."
             image="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d"
             link="/signup"
           />
