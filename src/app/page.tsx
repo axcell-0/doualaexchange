@@ -29,6 +29,43 @@
 //     <div className="min-h-screen bg-linear-to-b from-emerald-900 via-emerald-900 to-emerald-950 flex flex-col items-center justify-between px-6 py-12 sm:px-8">
 //       {/* Top spacer */}
 //       <div className="flex-1" />
+"use client"
+import { useRouter } from 'next/navigation';
+import React, { useEffect, useState } from 'react';
+import { BsArrowRepeat } from 'react-icons/bs';
+import { MdAttachMoney } from 'react-icons/md';
+
+const LoadingScreen: React.FC<{ onLoadComplete?: () => void }> = ({ onLoadComplete }) => {
+  const [progress, setProgress] = useState(0);
+  const router = useRouter();
+  useEffect(() => {
+  const interval = setInterval(() => {
+    setProgress((prev) => {
+      const next = prev + 10; // smoother loading
+
+      if (next >= 100) {
+        clearInterval(interval);
+
+        setTimeout(() => {
+          onLoadComplete?.();
+          router.push("/pageone"); // ✅ navigate only after full load
+        }, 500);
+
+        return 100;
+      }
+
+      return next;
+    });
+  }, 200); // speed of loading
+
+  return () => clearInterval(interval);
+}, [onLoadComplete, router]);
+
+
+  return (
+    <div className="min-h-screen bg-linear-to-b from-emerald-900 via-emerald-800 to-emerald-950 flex flex-col items-center justify-between px-6 py-12 sm:px-8">
+      {/* Top spacer */}
+      <div className="flex-1" />
 
 //       {/* Main content */}
 //       <div className="flex flex-col items-center justify-center flex-1 w-full max-w-md">
@@ -94,3 +131,4 @@
 // };
 
 // export default LoadingScreen;
+export default LoadingScreen;
