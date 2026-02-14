@@ -1,31 +1,48 @@
-import {NextResponse} from 'next/server';
-import {connectDB} from '@/lib/mongodb';
+import { NextResponse } from 'next/server';
+import { connectDB } from '@/lib/mongodb';
 import User from '@/models/User';
 
-// GET /api/users - list all users
 export async function GET() {
-  await connectDB();                      // 1. ensure DB connection
-  const users = await User.find().lean(); // 2. query all users
-  return NextResponse.json(users);        // 3. return as JSON
+  await connectDB();
+  const users = await User.find().lean();
+  return NextResponse.json(users);
 }
 
-// POST /api/users - create a new user
 export async function POST(request: Request) {
   await connectDB();
-    const body = await request.json();      // read JSON body from request
-    const { name, email, passwordHash, phone, role, location } = body;
-    // Basic validation (you can expand this as needed)
-    if (!name || !email || !passwordHash) {
-        return NextResponse.json(
-            { error: 'Name, email, and passwordHash are required' },
-            { status: 400 });
-    }
-    const user = await User.create({
-         name, 
-         email, 
-         passwordHash, 
-         phone, 
-         role, 
-         location });   // save to database
-    return NextResponse.json(user, { status: 201 });
+
+  const body = await request.json();
+  const { name, email, password, role, phone, location } = body;
+
+  // 1) Basic validation
+  if (!name || !email || !password) {
+    return NextResponse.json(
+      { error: 'name, email and password are required' },
+      { status: 400 }
+    );
+  }
+
+  // 2) Check if email already exists
+  const existing = await User.findOne({ email });
+  if (existing) {
+    return NextResponse.json(
+      { error: 'This email is already registered' },
+      { status: 409 } // conflict
+    );
+  }
+
+  // 3) Create user, Mongoose pre('save') will hash passwordHash
+  const user = await User.create({
+    name,
+    email,
+    passwordHash: password, // plain here, will be hashed in model
+    role,
+    phone,
+    location,
+  });
+
+  // 4) Never return the password hash to the client
+  const { passwordHash, ...safeUser } = user.toObject();
+
+  return NextResponse.json(safeUser, { status: 201 });
 }
