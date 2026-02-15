@@ -2,7 +2,7 @@ import { IoIosSearch } from "react-icons/io";
 
 export function TopBar() {
   return (
-    <div className="absolute top-0 left-0 right-0 z-20 px-4 pt-12 pb-4 bg-linear-to-b from-white/80 via-white/40 to-transparent dark:from-background-dark/80 dark:via-background-dark/40">
+    <div className="absolute top-0 left-0 right-0 z-20 px-4 pt-12 pb-4 bg-linear-to-b from-white/80 via-white/40 to-transparent dark:from-[#102216]/80 dark:via-[#102216]/40">
       <div className="flex items-center justify-between gap-3">
         {/* Avatar */}
         <div className="flex size-10 items-center justify-center rounded-full bg-white dark:bg-zinc-800 shadow-md border border-zinc-100 dark:border-zinc-700">
