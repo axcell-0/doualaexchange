@@ -4,11 +4,22 @@ import { useState } from "react";
 import { useRouter, useParams } from "next/navigation";
 import HeroBanner from "@/components/HeroBanner";
 
+type UserRole = "customer" | "exchanger";
+type KycStatus = "pending" | "approved" | "rejected" | undefined;
+
+type LoginUser = {
+  _id: string;
+  email: string;
+  fullName?: string;
+  role: UserRole;
+  kycStatus?: KycStatus;
+};
+
 export default function LoginPage() {
   const router = useRouter();
   const params = useParams();
 
-  // role comes from URL: /login/customer or /login/exchanger
+  // URL examples: /login/customer or /login/exchanger
   const roleParam = (params?.role as string) || "customer";
   const isExchanger = roleParam === "exchanger";
   const roleLabel = isExchanger ? "Money Changer" : "Customer";
@@ -45,9 +56,9 @@ export default function LoginPage() {
         return;
       }
 
-      const user = data.user as { role?: string };
+      const user = data.user as LoginUser;
 
-      // Role mismatch protection
+      // 1) Role mismatch safety:
       if (isExchanger && user.role !== "exchanger") {
         setErrorMessage(
           "This account is registered as a Customer. Please log in from the customer section."
@@ -64,15 +75,31 @@ export default function LoginPage() {
         return;
       }
 
-      // Success: redirect based on role
-      setIsLoading(false);
-
+      // 2) KYC checks for exchangers
       if (isExchanger) {
-        // later you can check kycStatus and choose page
+        const status = user.kycStatus;
+
+        if (status === "pending" || !status) {
+          setIsLoading(false);
+          router.push("/exchanger/pending");
+          return;
+        }
+
+        if (status === "rejected") {
+          setIsLoading(false);
+          router.push("/exchanger/rejected");
+          return;
+        }
+
+        // status === "approved"
+        setIsLoading(false);
         router.push("/exchanger/dashboard");
-      } else {
-        router.push("/main"); // customer dashboard
+        return;
       }
+
+      // 3) Normal customer login
+      setIsLoading(false);
+      router.push("/main");
     } catch (err) {
       console.error(err);
       setErrorMessage("Network error, please try again.");
@@ -84,18 +111,19 @@ export default function LoginPage() {
     <>
       <div className="bg-gray-500 dark:bg-[#102216]"></div>
       <HeroBanner />
-      <p className="text-[#102216]/70 dark:text-white/70 text-sm font-medium 
-        flex flex-col gap-2 mt-4 mb-6 text-center px-4">
-        Please enter your registered email account and password to access your {roleLabel.toLowerCase()} dashboard.
+      <p
+        className="text-[#102216]/70 dark:text-white/70 text-sm font-medium 
+        flex flex-col gap-2 mt-4 mb-6 text-center px-4"
+      >
+        Please enter your registered email account and password to access your{" "}
+        {roleLabel.toLowerCase()} dashboard.
       </p>
       <div className="flex items-center justify-center px-4">
         <form
           onSubmit={handleSubmit}
           className="w-full max-w-md bg-white p-6 rounded-xl shadow-sm"
         >
-          <h1 className="text-2xl font-bold mb-4">
-            Login as {roleLabel}
-          </h1>
+          <h1 className="text-2xl font-bold mb-4">Login as {roleLabel}</h1>
 
           <label className="block mb-3">
             <span className="text-sm font-medium text-gray-700">Email</span>
