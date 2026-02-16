@@ -1,3 +1,4 @@
+// src/app/exchanger/register/page.tsx
 import { PhoneFrame } from "@/components/PhoneFrame";
 import { RegistrationForm } from "@/components/RegistrationForm";
 
