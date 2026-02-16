@@ -20,7 +20,7 @@ export function BottomControls() {
         </button>
       </div>
 
-      <div className="bg-linear-to-t from-white via-white/90 to-transparent dark:from-background-dark dark:via-background-dark/90 pb-8 pt-10 px-5">
+      <div className="bg-linear-to-t from-white via-white/90 to-transparent dark:from-[#102216] dark:via-[#102216]/90 pb-8 pt-10 px-5">
         <button className="flex justify-center items-center gap-2 w-full h-16 rounded-xl bg-[#0ff05a] text-black font-bold text-lg shadow-lg active:scale-[0.98] mb-6">
           <RiMoneyDollarCircleLine size={24}/>
           New Exchange Request

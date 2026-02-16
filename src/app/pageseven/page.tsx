@@ -108,8 +108,8 @@ const MeetingDetails: React.FC<MeetingDetailsProps> = ({
 
           {/* USER INFO */}
           <div className="bg-white mt-6 rounded-2xl p-6 shadow-sm lg:flex lg:items-center lg:gap-6">
-            <div className="relative flex-shrink-0 mx-auto lg:mx-0">
-              <div className="w-16 h-16 rounded-full bg-gradient-to-br from-emerald-400 to-emerald-600 flex items-center justify-center">
+            <div className="relative shrink-0 mx-auto lg:mx-0">
+              <div className="w-16 h-16 rounded-full bg-linear-to-br from-emerald-400 to-emerald-600 flex items-center justify-center">
                 <span className="text-white text-2xl font-bold">
                   {userInfo.name.charAt(0)}
                 </span>
@@ -149,7 +149,7 @@ const MeetingDetails: React.FC<MeetingDetailsProps> = ({
               </div>
 
               <div className="bg-white rounded-2xl overflow-hidden shadow-sm">
-                <div className="h-64 bg-gradient-to-br from-blue-100 via-emerald-50 to-blue-50 flex items-center justify-center">
+                <div className="h-64 bg-linear-to-br from-blue-100 via-emerald-50 to-blue-50 flex items-center justify-center">
                   <MapPin className="w-10 h-10 text-red-500" />
                 </div>
 

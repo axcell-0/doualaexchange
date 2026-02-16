@@ -1,3 +1,4 @@
+
 "use client"
 import { useRouter } from 'next/navigation';
 import React, { useEffect, useState } from 'react';
@@ -36,45 +37,45 @@ const LoadingScreen: React.FC<{ onLoadComplete?: () => void }> = ({ onLoadComple
       {/* Top spacer */}
       <div className="flex-1" />
 
-      {/* Main content */}
-      <div className="flex flex-col items-center justify-center flex-1 w-full max-w-md">
-        {/* Logo container */}
-        <div className="mb-8 sm:mb-10">
-          <div className="sm:w-24 sm:h-24 flex items-center justify-center backdrop-blur-sm">
-            {/* Dollar sign with circular arrows */}
-            <div className="m-10 w-24 h-24 bg-[#0ff05a]/10 flex items-center justify-center rounded-xl border border-[#0ff05a]/40">
-              <div className="relative text-[#0ff05a]"><BsArrowRepeat size={75} /> </div>
-              <MdAttachMoney size={45} color="#0ff05a" className="absolute top-16 left-17" />
-            </div>
-          </div>
-        </div>
+       {/* Main content */}
+       <div className="flex flex-col items-center justify-center flex-1 w-full max-w-md">
+         {/* Logo container */}
+         <div className="mb-8 sm:mb-10">
+           <div className="sm:w-24 sm:h-24 flex items-center justify-center backdrop-blur-sm">
+             {/* Dollar sign with circular arrows */}
+             <div className="m-10 w-24 h-24 bg-[#0ff05a]/10 flex items-center justify-center rounded-xl border border-[#0ff05a]/40">
+               <div className="relative text-[#0ff05a]"><BsArrowRepeat size={75} /> </div>
+               <MdAttachMoney size={45} color="#0ff05a" className="absolute lg:top-7 lg:left-7 top-16 left-17" />
+             </div>
+           </div>
+         </div>
 
-        {/* Brand name */}
-        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-4 text-center">
-          Douala<span className="text-emerald-400">Exchange</span>
-        </h1>
+         {/* Brand name */}
+         <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-white mb-3 sm:mb-4 text-center">
+           Douala<span className="text-emerald-400">Exchange</span>
+         </h1>
 
-        {/* Tagline */}
-        <p className="text-emerald-300/90 text-base sm:text-lg text-center mb-2">
-          Currency exchange, finally secured
-        </p>
-      </div>
+         {/* Tagline */}
+         <p className="text-emerald-300/90 text-base sm:text-lg text-center mb-2">
+           Currency exchange, finally secured
+         </p>
+       </div>
 
-      {/* Bottom section with progress */}
-      <div className="w-full max-w-md mt-auto">
-        {/* Initializing text and percentage */}
-        <div className="flex items-center justify-between mb-3 sm:mb-4">
-          <span className="text-emerald-300/70 text-xs sm:text-sm uppercase tracking-wider">
-            Initializing Security
-          </span>
-          <span className="text-emerald-400 font-semibold text-sm sm:text-base">
-            {progress}%
-          </span>
-        </div>
+       {/* Bottom section with progress */}
+       <div className="w-full max-w-md mt-auto">
+         {/* Initializing text and percentage */}
+         <div className="flex items-center justify-between mb-3 sm:mb-4">
+           <span className="text-emerald-300/70 text-xs sm:text-sm uppercase tracking-wider">
+             Initializing Security
+           </span>
+           <span className="text-emerald-400 font-semibold text-sm sm:text-base">
+             {progress}%
+           </span>
+         </div>
 
-        {/* Progress bar */}
-        <div className="w-full h-1 bg-emerald-900/50 rounded-full overflow-hidden mb-4 sm:mb-5">
-          <div
+         {/* Progress bar */}
+         <div className="w-full h-1 bg-emerald-900/50 rounded-full overflow-hidden mb-4 sm:mb-5">
+           <div
             className="h-full bg-emerald-400 transition-all duration-300 ease-out rounded-full"
             style={{ width: `${progress}%` }}
           />

@@ -1,45 +1,150 @@
-type UploadCardProps = {
-  label: string;
+"use client";
+
+import { useEffect, useState } from "react";
+
+type VerificationUploadProps = {
+  frontValue: string | null;
+  backValue: string | null;
+  onChangeFront: (url: string | null) => void;
+  onChangeBack: (url: string | null) => void;
 };
 
-function UploadCard({ label }: UploadCardProps) {
-  return (
-    <div className="group relative flex flex-col items-center justify-center border-2 border-dashed border-slate-200 dark:border-slate-700 rounded-xl p-4 h-36 bg-slate-50 dark:bg-slate-800/30 hover:border-[#4b9b65] transition-colors cursor-pointer">
-      <span className="text-slate-400 group-hover:text-[#4b9b65] mb-2">
-        📸
-      </span>
-      <span className="text-[11px] font-medium text-center">{label}</span>
-      <div className="absolute inset-0 bg-[#0ff05a]/5 opacity-0 group-hover:opacity-100 rounded-xl pointer-events-none"></div>
-    </div>
-  );
-}
+export function VerificationUpload({
+  frontValue,
+  backValue,
+  onChangeFront,
+  onChangeBack,
+}: VerificationUploadProps) {
+  const [frontPreview, setFrontPreview] = useState<string | null>(frontValue);
+  const [backPreview, setBackPreview] = useState<string | null>(backValue);
 
-export function VerificationUpload() {
+  useEffect(() => {
+    setFrontPreview(frontValue);
+  }, [frontValue]);
+
+  useEffect(() => {
+    setBackPreview(backValue);
+  }, [backValue]);
+
+  const handleFrontChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const objectUrl = URL.createObjectURL(file);
+    setFrontPreview(objectUrl);
+    onChangeFront(objectUrl);
+  };
+
+  const handleBackChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    const objectUrl = URL.createObjectURL(file);
+    setBackPreview(objectUrl);
+    onChangeBack(objectUrl);
+  };
+
+  const clearFront = () => {
+    setFrontPreview(null);
+    onChangeFront(null);
+  };
+
+  const clearBack = () => {
+    setBackPreview(null);
+    onChangeBack(null);
+  };
+
   return (
     <section className="space-y-4">
-      <div className="flex justify-between items-end">
-        <h2 className="text-xs font-bold uppercase tracking-widest text-slate-400">
-          Identity Verification
-        </h2>
-        <span className="text-[10px] text-[#0ff05a] bg-[#0ff05a]/10 px-2 py-0.5 rounded-full font-bold">
-          REQUIRED
-        </span>
+      <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400">
+        Identity Verification
+      </h2>
+
+      <p className="text-xs text-gray-500">
+        Upload a clear photo of the <span className="font-semibold">front</span>{" "}
+        and <span className="font-semibold">back</span> of your ID card.
+      </p>
+
+      {/* Front side */}
+      <div className="space-y-2">
+        <label className="block text-[11px] font-bold text-green-500 uppercase mb-1">
+          Front of ID
+        </label>
+
+        <div className="flex items-center gap-4">
+          <div className="w-32 h-20 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
+            {frontPreview ? (
+              <img
+                src={frontPreview}
+                alt="ID front preview"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="text-[10px] text-gray-500 text-center px-2">
+                No image
+              </span>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleFrontChange}
+              className="text-xs"
+            />
+            {frontPreview && (
+              <button
+                type="button"
+                onClick={clearFront}
+                className="text-xs text-red-500 underline"
+              >
+                Remove
+              </button>
+            )}
+          </div>
+        </div>
       </div>
 
-      <div className="grid grid-cols-2 gap-4">
-        <UploadCard label="Front of ID or Passport" />
-        <UploadCard label="Back of ID Card" />
-      </div>
+      {/* Back side */}
+      <div className="space-y-2">
+        <label className="block text-[11px] font-bold text-green-500 uppercase mb-1">
+          Back of ID
+        </label>
 
-      <div className="bg-[#4b9b65]/5 rounded-lg p-3 space-y-2 border border-[#0ff05a]/10">
-        <h4 className="text-[11px] font-bold text-[#0ff05a] uppercase flex items-center gap-1">
-          ℹ️ Photo Requirements
-        </h4>
-        <ul className="text-[10px] text-slate-600 dark:text-slate-400 space-y-1">
-          <li>• Ensure all 4 corners are visible</li>
-          <li>• Text must be clear and readable</li>
-          <li>• Avoid direct glare from lights</li>
-        </ul>
+        <div className="flex items-center gap-4">
+          <div className="w-32 h-20 bg-gray-200 rounded-lg overflow-hidden flex items-center justify-center">
+            {backPreview ? (
+              <img
+                src={backPreview}
+                alt="ID back preview"
+                className="w-full h-full object-cover"
+              />
+            ) : (
+              <span className="text-[10px] text-gray-500 text-center px-2">
+                No image
+              </span>
+            )}
+          </div>
+
+          <div className="flex flex-col gap-1">
+            <input
+              type="file"
+              accept="image/*"
+              onChange={handleBackChange}
+              className="text-xs"
+            />
+            {backPreview && (
+              <button
+                type="button"
+                onClick={clearBack}
+                className="text-xs text-red-500 underline"
+              >
+                Remove
+              </button>
+            )}
+          </div>
+        </div>
       </div>
     </section>
   );
