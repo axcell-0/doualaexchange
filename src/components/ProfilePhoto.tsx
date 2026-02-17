@@ -60,7 +60,7 @@ export function ProfilePhoto({ value, onChange }: ProfilePhotoProps) {
 
       <div className="text-center mt-1">
         <h3 className="font-medium">Profile Photo</h3>
-        <p className="text-xs text-slate-500 dark:text-slate-400">
+        <p className="text-xs text-[#102216] dark:text-slate-400">
           Build trust with your future clients
         </p>
         {preview && (

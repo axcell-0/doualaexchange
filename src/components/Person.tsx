@@ -41,7 +41,7 @@ export default function Person({
 
           <div className="h-40 w-full bg-center bg-no-repeat rounded-lg">
             <img
-              className="h-full w-full object-contain"
+              className="h-full max-w-[130px] lg:w-full object-contain rounded-sm"
               src={image}
               alt={title}
             />

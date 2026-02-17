@@ -16,7 +16,11 @@ export default function page() {
       {/* two */}
       <div className='px-8'>
         <p className=' text-xl mt-8'>ONBOARDING STEP 1 OF 3</p>
-        <hr  className='bg-green-200 h-2 rounded-full my-4 border-none'/>
+        {/* beginning */}
+        <div className="w-full bg-green-200 h-2 rounded-full my-4">
+          <div className="bg-green-500 h-2 rounded-full" style={{ width: "33.3%" }}></div>
+        </div>
+        {/* ending */}
         <h1 className="text-[#0d1c12] dark:text-white tracking-tight text-[32px] font-bold leading-tight pb-3"><TypedText/></h1>                         
         <p className="text-[#4b5563] mb-9 text-base font-normal leading-relaxed">Select the profile that best describes your needs for secure trading in Douala.</p> 
 
@@ -24,28 +28,24 @@ export default function page() {
         <div>
           <Person
             title="I want to exchange"
-            description="I need to buy or sell currency for personal use quickly and securely."
-            image="https://lh3.googleusercontent.com/aida-public/AB6AXuAq198WF2Hbrm9Z-YvelBfzGpTmCUxRN-M0Bw3vkaCtZQkUEMlGZSecUGn9BTCMQHKHkyzvZWoWgCmoEKNYKXRbNFGwgUDxMFcPTprSVnjbHxy2KSN27IfvDhM5lKRelwDLGTtq7QHlVtT-d3B8ioiI-7Kc59dr2kuDcpaapiyNnH7WIpFuhXVFrjyWbpxl7eUXxjA0chW7ngvX-01jxrFnFEHRGNysYmj2_K4hm_7sGEN9HB64BRntQ9Dw5xllgON3HF26PEJfL4Kx"
+            description="I need to buy  currency for personal use quickly and securely."
+            image="moneyclient.jpg"
             link="/auth/customer"
           />
 
           <Person
             title="I am a money changer"
-            description="I have money to exchange for others."
-            image="https://images.unsplash.com/photo-1556742049-0cfed4f6a45d"
+            description="I have money currencies to exchange for others."
+            image="/moneyserver.jpg"
             link="/auth/exchanger"
           />
         </div>
-        <button className=' py-2 rounded-md my-6 shadow-xl hover:bg-green-500 hover:text-white transition duration-100 w-full text-black bg-green-400 flex items-center gap-3 
+        {/* <button className=' py-2 rounded-md my-6 shadow-xl hover:bg-green-500 hover:text-white transition duration-100 w-full text-black bg-green-400 flex items-center gap-3 
         text-xl font-semibold justify-center'>continue <FaLongArrowAltRight />
-        </button>
+        </button> */}
 
         <p className='text-gray-400 text-[12px] text-center  w-full'>you can swith your profile type later in setting</p> 
       </div>
-
-      
     </div>
-    
-      
   )
 }

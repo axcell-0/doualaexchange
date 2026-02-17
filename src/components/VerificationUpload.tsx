@@ -56,11 +56,11 @@ export function VerificationUpload({
 
   return (
     <section className="space-y-4">
-      <h2 className="text-xs font-bold uppercase tracking-widest text-gray-400">
+      <h2 className="text-xs font-bold uppercase tracking-widest text-[#102216]">
         Identity Verification
       </h2>
 
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-[#102216]">
         Upload a clear photo of the <span className="font-semibold">front</span>{" "}
         and <span className="font-semibold">back</span> of your ID card.
       </p>
