@@ -97,7 +97,7 @@ export function RegistrationForm() {
         localStorage.removeItem("exchangerStep1");
       }
 
-      router.push("/main");
+      router.push("/login/exchanger");
     } catch (err) {
       console.error(err);
       setErrorMessage("Network error. Please try again.");

@@ -175,7 +175,7 @@ const CreateAccount: React.FC<CreateAccountProps> = ({ onBack, onComplete }) => 
       });
 
       setIsLoading(false);
-      router.push("/main");
+      router.push("/customer/dashboard");
     } catch (err) {
       console.error(err);
       setErrorMessage("Network error. Please try again.");

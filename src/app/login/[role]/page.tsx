@@ -13,13 +13,14 @@ type LoginUser = {
   fullName?: string;
   role: UserRole;
   kycStatus?: KycStatus;
+  hasSeenKycApprovedScreen?: boolean;
 };
 
 export default function LoginPage() {
   const router = useRouter();
   const params = useParams();
 
-  // URL examples: /login/customer or /login/exchanger
+  // /login/customer or /login/exchanger
   const roleParam = (params?.role as string) || "customer";
   const isExchanger = roleParam === "exchanger";
   const roleLabel = isExchanger ? "Money Changer" : "Customer";
@@ -58,7 +59,7 @@ export default function LoginPage() {
 
       const user = data.user as LoginUser;
 
-      // 1) Role mismatch safety:
+      // 1) Role mismatch guard
       if (isExchanger && user.role !== "exchanger") {
         setErrorMessage(
           "This account is registered as a Customer. Please log in from the customer section."
@@ -75,7 +76,7 @@ export default function LoginPage() {
         return;
       }
 
-      // 2) KYC checks for exchangers
+      // 2) Exchanger KYC flow
       if (isExchanger) {
         const status = user.kycStatus;
 
@@ -92,14 +93,24 @@ export default function LoginPage() {
         }
 
         // status === "approved"
+        const hasSeen = user.hasSeenKycApprovedScreen ?? false;
+
         setIsLoading(false);
+
+        if (!hasSeen) {
+          // first time after approval → show approved screen
+          router.push("/exchanger/approved");
+          return;
+        }
+
+        // already saw the approved screen → go directly to dashboard
         router.push("/exchanger/dashboard");
         return;
       }
 
-      // 3) Normal customer login
+      // 3) Customer success
       setIsLoading(false);
-      router.push("/main");
+      router.push("/customer/dashboard");
     } catch (err) {
       console.error(err);
       setErrorMessage("Network error, please try again.");

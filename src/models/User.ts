@@ -32,7 +32,7 @@ const UserSchema = new Schema(
 
     location: { type: String, trim: true },
 
-     // ===== Exchanger-specific fields =====
+    // ===== Exchanger-specific fields =====
     businessName: { type: String, trim: true },
 
     profileImageUrl: { type: String, trim: true },    // URL after upload
@@ -43,6 +43,11 @@ const UserSchema = new Schema(
       type: String,
       enum: ["pending", "approved", "rejected"],
       default: "pending",
+    },
+
+    hasSeenKycApprovedScreen: {
+      type: Boolean,
+      default: false,
     },
   },
   { timestamps: true }
